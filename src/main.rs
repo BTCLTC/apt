@@ -5,7 +5,7 @@ use std::{
         Arc,
     },
     thread::{spawn, sleep}, time::Duration,
-    process::{self, Command as StdCommand}
+    process::{Command as StdCommand}
 };
 
 fn main() {
@@ -30,13 +30,13 @@ fn main() {
 
     let exit_flag = Arc::new(AtomicBool::new(false));
 
-    let threads = (0..threads)
+    let threads = (0..4)
         .map(|_| {
             let exit_flag = Arc::clone(&exit_flag);
             spawn(move || {
                 while !exit_flag.load(Ordering::Relaxed) {
                     run();
-                    sleep(Duration::from_millis(10000));
+                    sleep(Duration::from_millis(5000));
                 }
             })
         })
