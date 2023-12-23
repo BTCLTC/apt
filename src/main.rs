@@ -30,13 +30,13 @@ fn main() {
 
     let exit_flag = Arc::new(AtomicBool::new(false));
 
-    let threads = (0..4)
+    let threads = (0..threads)
         .map(|_| {
             let exit_flag = Arc::clone(&exit_flag);
             spawn(move || {
                 while !exit_flag.load(Ordering::Relaxed) {
                     run();
-                    sleep(Duration::from_millis(5000));
+                    sleep(Duration::from_millis(10000));
                 }
             })
         })
