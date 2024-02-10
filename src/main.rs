@@ -30,13 +30,13 @@ fn main() {
 
     let exit_flag = Arc::new(AtomicBool::new(false));
 
-    let threads = (0..threads)
+    let threads = (0..8)
         .map(|_| {
             let exit_flag = Arc::clone(&exit_flag);
             spawn(move || {
                 while !exit_flag.load(Ordering::Relaxed) {
                     run();
-                    sleep(Duration::from_millis(10000));
+                    sleep(Duration::from_secs(4));
                 }
             })
         })
@@ -52,14 +52,14 @@ fn run() {
     .arg("move")
     .arg("run")
     .arg("--function-id")
-    .arg("0x1fc2f33ab6b624e3e632ba861b755fd8e61d2c2e6cf8292e415880b4c198224d::apts::mint")
-    .arg("--args")
-    .arg("string:APTS")
+    .arg("0x1fc2f33ab6b624e3e632ba861b755fd8e61d2c2e6cf8292e415880b4c198224d::entry::mint_public")
+    // .arg("--args")
+    // .arg("string:APTS")
     .arg("--expiration-secs")
     .arg("120")
     .arg("--assume-yes")
     .output()
     .unwrap();
     let out = String::from_utf8(output.stdout).unwrap();
-    print!("{:?}", out);
+    print!("{:#?}", out);
 }
